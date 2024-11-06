@@ -72,6 +72,12 @@ public class CreateFragment extends Fragment {
         }
     }
 
+
+    private EditText etTitle;
+    private EditText etDate;
+    private EditText etTime;
+    private EditText etCategory;
+
     public TaskModel getTaskModel() {
         String title = etTitle.getText().toString();
         String date = etDate.getText().toString();
@@ -80,10 +86,6 @@ public class CreateFragment extends Fragment {
         return new TaskModel(title, date, time, category); // 다른 필드는 기본값으로 설정하거나 필요 시 추가
     }
 
-    private EditText etTitle;
-    private EditText etDate;
-    private EditText etTime;
-    private EditText etCategory;
     private TaskFileController controller;
 
     @Nullable
@@ -97,8 +99,6 @@ public class CreateFragment extends Fragment {
         etDate = (EditText)view.findViewById(R.id.etDate);
         etTime= (EditText)view.findViewById(R.id.etTime);
         etCategory = (EditText)view.findViewById(R.id.etCategory);
-
-
 
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.btmNavigation);
 

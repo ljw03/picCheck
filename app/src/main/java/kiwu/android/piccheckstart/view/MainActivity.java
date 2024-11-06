@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import kiwu.android.piccheckstart.R;
 import kiwu.android.piccheckstart.controller.ListCategoryController;
@@ -196,4 +197,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    public ArrayList<TaskModel> retrieveAll() {
+        ArrayList<TaskModel> tasks = new ArrayList<>();
+
+        try {
+            tasks = controller.retrieveAll();
+        } catch(IOException ioe) {
+            Toast.makeText(this, ioe.getMessage(), Toast.LENGTH_SHORT).show();
+        } // end try~catch
+
+        return tasks;
+    } // end retrieveAll
 }

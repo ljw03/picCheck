@@ -39,8 +39,8 @@ public class TaskFileController {
 
             task = new TaskModel(tokens.nextToken());
             task.setTitle(tokens.nextToken());
-            task.setPicture(tokens.nextToken());
-            task.setCreateDateStr(tokens.nextToken());
+            task.setDate(tokens.nextToken());
+            task.setTime(tokens.nextToken());
 
             tasks.add(task);
         } // end while
@@ -89,12 +89,17 @@ public class TaskFileController {
         } // end if
 
         if(tasks.contains(task)) {
-            throw new IOException("[" + task.getTitle() + "] 학생이 이미 존재합니다.");
+            throw new IOException("[" + task.getTitle() + "] 이미 작성된 목록입니다.");
         } else {
             tasks.add(task);
 
             write(tasks);
         } // end if~else
     }
+
+
+    public ArrayList<TaskModel> retrieveAll() throws IOException {
+        return read();
+    } // end retrieveAll
 
 }
