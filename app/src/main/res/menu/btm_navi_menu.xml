@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btm_navi_item_list"
+        android:icon="@drawable/list"
+        android:title="할 일" />
+    <item
+        android:id="@+id/btm_navi_item_calendar"
+        android:icon="@drawable/today"
+        android:title="캘린더" />
+    <item
+        android:id="@+id/btm_navi_item_storage"
+        android:icon="@drawable/archive"
+        android:title="보관함" />
+</menu>

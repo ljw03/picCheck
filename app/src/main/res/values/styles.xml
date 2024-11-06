@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavigationViewTextOnly" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconSize">0dp</item> <!-- 아이콘 공간 제거 -->
+        <item name="labelVisibilityMode">labeled</item> <!-- 항상 텍스트 표시 -->
+        <item name="itemTextAppearanceActive">@style/BottomNavigationTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationTextAppearance</item>
+    </style>
+
+    <style name="BottomNavigationTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">14sp</item> <!-- 텍스트 크기 설정 -->
+        <item name="android:textAlignment">center</item> <!-- 텍스트 중앙 정렬 -->
+        <item name="android:gravity">center</item> <!-- 텍스트 중앙 배치 -->
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+
+</resources>
