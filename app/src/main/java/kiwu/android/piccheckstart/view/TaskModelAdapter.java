@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kiwu.android.piccheckstart.R;
 import kiwu.android.piccheckstart.model.TaskModel;
@@ -17,6 +18,12 @@ import kiwu.android.piccheckstart.model.TaskModel;
 public class TaskModelAdapter extends RecyclerView.Adapter<TaskModelAdapter.TaskViewHolder> {
 
     private ArrayList<TaskModel> tasks = new ArrayList<>();
+
+    public void setItems(List<TaskModel> items) {
+        tasks.clear();
+        tasks.addAll(items);
+        notifyDataSetChanged();  // 추가하여 RecyclerView 업데이트
+    }
 
     @NonNull
     @Override
@@ -44,8 +51,10 @@ public class TaskModelAdapter extends RecyclerView.Adapter<TaskModelAdapter.Task
     } // end addStudent
 
     public void addTasks(ArrayList<TaskModel> tasks) {
-        this.tasks = tasks;
-    } // end addStudents
+        this.tasks.clear(); // 기존 항목 제거
+        this.tasks.addAll(tasks); // 새 항목 추가
+        notifyDataSetChanged(); // 목록 갱신
+    }
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;

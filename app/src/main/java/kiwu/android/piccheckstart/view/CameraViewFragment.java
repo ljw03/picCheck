@@ -1,5 +1,6 @@
 package kiwu.android.piccheckstart.view;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
@@ -40,8 +43,15 @@ public class CameraViewFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public CameraViewFragment() {
-        // Required empty public constructor
+    private static final String ARG_IMAGE_URI = "image_uri";
+    private Uri imageUri;
+
+    public static CameraViewFragment newInstance(String imageUri) {
+        CameraViewFragment fragment = new CameraViewFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_IMAGE_URI, imageUri);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     /**
@@ -61,37 +71,64 @@ public class CameraViewFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    private PreviewView previewView;
+
+    private ImageView imageView;
     private ImageCapture imageCapture;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            imageUri = Uri.parse(getArguments().getString(ARG_IMAGE_URI));
+        }
+    }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_camera, container, false);
-        previewView = view.findViewById(R.id.viewFinder);
-        startCameraPreview();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_camera_view, container, false);
+
+        ImageView imageView = view.findViewById(R.id.viewFinder);
+        // 미리보기 설정 (예: Glide를 사용하여 이미지 로드)
+
+        Glide.with(this).load(imageUri).into(imageView);
+
         return view;
     }
 
-    private void startCameraPreview() {
-        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext());
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                Preview preview = new Preview.Builder().build();
-                preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        // 취소 버튼 설정
+        View cancelButton = view.findViewById(R.id.cmr_cancel_button);
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> {
+                // 취소 시 다시 촬영 시도 로직
+                retryPhotoCapture();
+            });
+        } else {
 
-                imageCapture = new ImageCapture.Builder().build();
-                CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+        }
 
-                cameraProvider.unbindAll();
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
+        // 저장 버튼 설정
+        View saveButton = view.findViewById(R.id.cmr_save_button);
+        if (saveButton != null) {
+            saveButton.setOnClickListener(v -> {
+                // 저장 시 할 일 완료 처리 로직
+                markTaskAsCompleted();
+            });
+        } else {
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, ContextCompat.getMainExecutor(requireContext()));
+        }
+    }
+
+    private void retryPhotoCapture() {
+        // 사진 다시 촬영 로직
+    }
+
+    private void markTaskAsCompleted() {
+        // 할 일을 완료로 표시하는 로직
     }
 
 

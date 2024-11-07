@@ -52,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        // 처음 화면에 ListFragment 추가
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frmMain, new ListFragment())
+                    .commit();
+        }
+
         // Initialize views
         topToolbar = findViewById(R.id.topToolbar);
         setSupportActionBar(topToolbar);
@@ -103,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Start with the LIST_FRAGMENT
         changeFragment(LIST_FRAGMENT);
+    }
+
+    public void launchCameraFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frmMain, new CameraFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -176,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.frmMain, listFragment);
                 if (btmNavigation != null) btmNavigation.setVisibility(View.VISIBLE);
                 if (tabLayout != null) tabLayout.setVisibility(View.VISIBLE);
+                if (topToolbar != null) topToolbar.setVisibility(View.VISIBLE);
                 ft.commitNow();
                 break;
             case CALENDAR_FRAGMENT:
@@ -190,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.frmMain, createFragment);
                 if (btmNavigation != null) btmNavigation.setVisibility(View.GONE);
                 if (tabLayout != null) tabLayout.setVisibility(View.GONE);
+                if (topToolbar != null) topToolbar.setVisibility(View.GONE);
                 ft.commitNow();
                 break;
             case CATEGORY_FRAGMENT:
@@ -219,4 +236,5 @@ public class MainActivity extends AppCompatActivity {
 
         return tasks;
     } // end retrieveAll
+
 }

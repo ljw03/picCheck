@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,6 +39,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Glide 의존성
+    implementation(libs.glide)
+    annotationProcessor(libs.glideCompiler)
 
     val cameraxVersion = "1.1.0"
     implementation("androidx.camera:camera-core:$cameraxVersion")
