@@ -8,66 +8,76 @@
     android:orientation="vertical"
     tools:context=".view.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/topToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:minHeight="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/frmMain"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categoryTab">
+        android:orientation="vertical">
 
-    </FrameLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/categoryTab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topToolbar"
-        app:tabContentStart="16dp"
-        app:tabIndicatorColor="#000000"
-        app:tabMode="scrollable"
-        app:tabRippleColor="#00FFFFFF"
-        app:tabTextColor="#000000">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topToolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="전체" />
+            android:background="#FFFFFF"
+            android:minHeight="?attr/actionBarSize" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/categoryTab"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="학교" />
+            app:tabContentStart="16dp"
+            app:tabIndicatorColor="#000000"
+            app:tabMode="scrollable"
+            app:tabRippleColor="#00FFFFFF"
+            app:tabTextColor="#000000">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="취미" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전체" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="건강" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="학교" />
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="습관" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취미" />
 
-    </com.google.android.material.tabs.TabLayout>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="건강" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="습관" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="79dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/frmMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btmNavigation"

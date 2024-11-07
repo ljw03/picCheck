@@ -1,26 +1,41 @@
 package kiwu.android.piccheckstart.view;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import android.Manifest;
 import kiwu.android.piccheckstart.R;
 import kiwu.android.piccheckstart.controller.ListCategoryController;
 import kiwu.android.piccheckstart.model.TaskModel;
@@ -96,7 +111,7 @@ public class ListFragment extends Fragment {
     private class SwipeToCameraCallback extends ItemTouchHelper.Callback {
 
         private Context context;
-        private Paint paint = new Paint();
+        private final Paint paint = new Paint();
 
         public SwipeToCameraCallback(Context context) {
             this.context = context;
@@ -115,7 +130,10 @@ public class ListFragment extends Fragment {
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            Toast.makeText(context, "카메라 메뉴를 열었습니다.", Toast.LENGTH_SHORT).show();
+
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).changeFragment(MainActivity.CAMERA_FRAGMENT);
+            }
 
             // 원래 상태로 복구
             adapter.notifyItemChanged(position);
@@ -168,6 +186,59 @@ public class ListFragment extends Fragment {
     }
 
     // 스와이프 동작을 위한 내부 클래스
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            File photoFile = createImageFile();
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(requireContext(), "kiwu.android.piccheckstart.fileprovider", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, CAMERA_INTENT_CODE);
+            }
+        }
+    }
+
+    private File createImageFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    private static final int CAMERA_REQUEST_CODE = 100;
+    private static final int CAMERA_INTENT_CODE = 101;
+    private Uri photoUri;
+
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, CAMERA_REQUEST_CODE);
+        } else {
+            openCamera();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            openCamera();
+        } else {
+            Toast.makeText(getContext(), "카메라 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 

@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private StorageFragment strgFragment;
     private CreateFragment createFragment;
     private CategoryFragment categoryFragment;
+    private CameraFragment cameraFragment;
 
     private BottomNavigationView btmNavigation;
     private ListCategoryController categoryController;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         strgFragment = new StorageFragment();
         createFragment = new CreateFragment();
         categoryFragment = new CategoryFragment();
+        cameraFragment = new CameraFragment();
 
         // Set bottom navigation item selected listener
         if (btmNavigation != null) {
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int STORAGE_FRAGMENT = 2;
     public static final int CREATE_FRAGMENT = 3;
     public static final int CATEGORY_FRAGMENT = 4;
+    public static final int CAMERA_FRAGMENT = 5;
 
     // Fragment switching logic
     public void changeFragment(int fragmentNum) {
@@ -191,6 +194,13 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case CATEGORY_FRAGMENT:
                 ft.replace(R.id.frmMain, categoryFragment);
+                if (btmNavigation != null) btmNavigation.setVisibility(View.GONE);
+                if (tabLayout != null) tabLayout.setVisibility(View.GONE);
+                if (topToolbar != null) topToolbar.setVisibility(View.GONE);
+                ft.commitNow();
+                break;
+            case CAMERA_FRAGMENT:
+                ft.replace(R.id.frmMain, cameraFragment);
                 if (btmNavigation != null) btmNavigation.setVisibility(View.GONE);
                 if (tabLayout != null) tabLayout.setVisibility(View.GONE);
                 ft.commitNow();
